@@ -13,14 +13,15 @@ import numpy as np
 import pandas as pd
 import re
 import sys
-from selenium import webdriver
+#from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
+from webdriver_manager.chrome import ChromeDriverManager
 import signal
 
 from create_clean_table import *
 
-global DRIVER_LOCATION
-DRIVER_LOCATION = "C:\\Users\\Utilisateur\\Desktop\\chromedriver.exe"
+#global DRIVER_LOCATION
+#DRIVER_LOCATION = "C:\\Users\\Utilisateur\\Desktop\\chromedriver.exe"
 
 global TYPE_ODDS
 TYPE_ODDS = 'CLOSING' # you can change to 'OPENING' if you want to collect opening odds, any other value will make the program collect CLOSING odds
@@ -201,7 +202,7 @@ def scrape_current_tournament_typeA(sport, tournament, country, SEASON, max_page
             driver.quit() # close all widows
         except:
             pass
-        driver = webdriver.Chrome(executable_path = DRIVER_LOCATION)
+        driver =  webdriver.Chrome(executable_path=ChromeDriverManager().install())
         data = scrape_page_typeA(page,sport, country, tournament, SEASON)
         DATA_ALL = DATA_ALL + [y for y in data if y != None]
         driver.close()
@@ -263,7 +264,7 @@ def scrape_current_season_typeA(tournament, sport, country, SEASON, max_page = 2
             driver.quit() # close all widows
         except:
             pass
-        driver = webdriver.Chrome(executable_path = DRIVER_LOCATION)
+        driver = webdriver.Chrome(executable_path=ChromeDriverManager().install())
         data = scrape_page_current_season_typeA(page, sport, country, tournament)
         DATA_ALL = DATA_ALL + [y for y in data if y != None]
         driver.close()
@@ -363,7 +364,7 @@ def scrape_next_games_typeA(tournament, sport, country, SEASON, nmax = 30):
     except:
         pass
 
-    driver = webdriver.Chrome(executable_path = DRIVER_LOCATION)
+    driver = webdriver.Chrome(executable_path=ChromeDriverManager().install())
     data = scrape_page_next_games_typeA(country, sport, tournament, nmax)
     DATA_ALL = DATA_ALL + [y for y in data if y != None]
     driver.close()
@@ -553,7 +554,7 @@ def scrape_current_tournament_typeB(Surface, bestof = 3, tournament = 'wta-lyon'
     except:
         pass
 
-    driver = webdriver.Chrome(executable_path = DRIVER_LOCATION)
+    driver = webdriver.Chrome(executable_path=ChromeDriverManager().install())
     #SEASON = '''2020'''
     DATA_ALL = []
     for page in range(1, max_page + 1):
@@ -629,7 +630,7 @@ def scrape_next_games_typeB(Surface, bestof, tournament , country , name_to_writ
         pass
 
  
-    driver = webdriver.Chrome(executable_path = DRIVER_LOCATION)
+    driver = webdriver.Chrome(executable_path=ChromeDriverManager().install())
     #SEASON = '''2020'''
     DATA_ALL = []
     for page in range(1):
@@ -805,7 +806,7 @@ def scrape_page_next_games_typeC(country,sport,  tournament, nmax = 20):
     return(DATA)
 
 def scrape_page_current_season_typeC(page,sport, country, tournament):
-    link = 'https://www.oddsportal.com/{}/{}/{}/results/page/1/#/page/{}'.format(sport,country,tournament,page)
+    link = 'https://www.oddsportal.com/{}/{}/{}/results/#/page/{}'.format(sport,country,tournament,page)
     DATA = []
     for i in range(1,100):
         content = get_data_typeC(i, link)
@@ -826,7 +827,7 @@ def scrape_current_tournament_typeC(sport, tournament, country, SEASON, max_page
             pass
     
  
-        driver = webdriver.Chrome(executable_path = DRIVER_LOCATION)
+        driver = webdriver.Chrome(executable_path=ChromeDriverManager().install())
         data = scrape_page_typeC(page, sport, country, tournament, SEASON)
         DATA_ALL = DATA_ALL + [y for y in data if y != None]
         driver.close()
@@ -884,7 +885,7 @@ def scrape_current_season_typeC(tournament, sport, country, SEASON, max_page = 2
             pass
 
  
-        driver = webdriver.Chrome(executable_path = DRIVER_LOCATION)
+        driver = webdriver.Chrome(executable_path=ChromeDriverManager().install())
         data = scrape_page_current_season_typeC(page, sport, country, tournament)
         DATA_ALL = DATA_ALL + [y for y in data if y != None]
         driver.close()
@@ -970,7 +971,7 @@ def scrape_next_games_typeC(tournament, sport, country, SEASON, nmax = 30):
         pass
 
  
-    driver = webdriver.Chrome(executable_path = DRIVER_LOCATION)
+    driver = webdriver.Chrome(executable_path=ChromeDriverManager().install())
     data = scrape_page_next_games_typeC(country, sport, tournament, nmax)
     DATA_ALL = DATA_ALL + [y for y in data if y != None]
     driver.close()
@@ -1133,7 +1134,7 @@ def scrape_current_tournament_typeD(sport, tournament, country, SEASON, max_page
             pass
 
  
-        driver = webdriver.Chrome(executable_path = DRIVER_LOCATION)
+        driver = webdriver.Chrome(executable_path=ChromeDriverManager().install())
         data = scrape_page_typeD(page, sport, country, tournament, SEASON)
         DATA_ALL = DATA_ALL + [y for y in data if y != None]
         driver.close()
@@ -1198,7 +1199,7 @@ def scrape_current_season_typeD(tournament, sport, country, SEASON, max_page = 2
             pass
 
  
-        driver = webdriver.Chrome(executable_path = DRIVER_LOCATION)
+        driver = webdriver.Chrome(executable_path=ChromeDriverManager().install())
         data = scrape_page_current_season_typeD(page, sport, country, tournament)
         DATA_ALL = DATA_ALL + [y for y in data if y != None]
         driver.close()
@@ -1250,7 +1251,7 @@ def scrape_next_games_typeD(tournament, sport, country, SEASON, nmax = 30):
         pass
 
  
-    driver = webdriver.Chrome(executable_path = DRIVER_LOCATION)
+    driver = webdriver.Chrome(executable_path=ChromeDriverManager().install())
     data = scrape_page_next_games_typeD(country, sport, tournament, nmax)
     DATA_ALL = DATA_ALL + [y for y in data if y != None]
     driver.close()
@@ -1347,7 +1348,7 @@ def scrape_oddsportal_current_season(sport = 'football', country = 'france', lea
       country : country as mentioned on oddsportal website 
       league : league as mentioned on oddsportal website
       season : season that you want in the column Season in the csv'''
-  L = ['soccer', 'basketball', 'esports', 'darts', 'tennis', 'baseball', 'rugby-union', 'rugby-league', 'american-football', 'hockey', 'volleyball', 'handball']
+  L = ['football', 'basketball', 'esports', 'darts', 'tennis', 'baseball', 'rugby-union', 'rugby-league', 'american-football', 'hockey', 'volleyball', 'handball']
   
   while sport not in L :
     sport = input('Please choose a sport among the following list : \n {} \n'.format(L))
@@ -1363,7 +1364,7 @@ def scrape_oddsportal_current_season(sport = 'football', country = 'france', lea
     df = scrape_current_tournament_typeB(Surface = surface, bestof = bestof, tournament = league, \
         country = country, name_to_write = league, SEASON = season, max_page = 25)
     df = create_clean_table_two_ways(df)
-  elif sport in ['soccer', 'rugby-union', 'rugby-league', 'handball']:
+  elif sport in ['football', 'rugby-union', 'rugby-league', 'handball']:
     df = scrape_current_season_typeC(tournament = league, sport = sport, country = country, SEASON = season, max_page = max_page)
     df = create_clean_table_three_ways(df)
   elif sport in ['hockey']:
@@ -1384,7 +1385,7 @@ def scrape_oddsportal_historical(sport = 'football', country = 'france', league 
       start_season : starting season as mentioned in the oddsportal website
       nseasons = number of seasons to scrape from the starting season (do not include current season!)
       current_season : do you want to scrape current season aswell ? '''
-  L = ['soccer', 'basketball', 'esports', 'darts', 'tennis', 'baseball', 'rugby-union', 'rugby-league', 'american-football', 'hockey', 'volleyball', 'handball']
+  L = ['football', 'basketball', 'esports', 'darts', 'tennis', 'baseball', 'rugby-union', 'rugby-league', 'american-football', 'hockey', 'volleyball', 'handball']
   
   while sport not in L :
     sport = input('Please choose a sport among the following list : \n {} \n'.format(L))
@@ -1419,7 +1420,7 @@ def scrape_oddsportal_next_games(sport = 'football', country = 'france', league 
       league : league as mentioned on oddsportal website
       season : season that you want in the column Season in the csv
       nmax : how many links do you want to try - usually nmax = 4*number of games we want to scrape'''
-  L = ['soccer', 'basketball', 'esports', 'darts', 'tennis', 'baseball', 'rugby-union', 'rugby-league', 'american-football', 'hockey', 'volleyball', 'handball']
+  L = ['football', 'basketball', 'esports', 'darts', 'tennis', 'baseball', 'rugby-union', 'rugby-league', 'american-football', 'hockey', 'volleyball', 'handball']
   
   while sport not in L :
     sport = input('Please choose a sport among the following list : \n {} \n'.format(L))
